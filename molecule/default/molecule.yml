@@ -1,0 +1,32 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+platforms:
+  - name: instance
+    image: docker.io/kalilinux/kali-rolling:latest
+    pre_build_image: true
+provisioner:
+  name: ansible
+  log: True
+  playbooks:
+    prepare: prepare.yml
+    converge: ../../site.yml
+scenario:
+  name: default
+  test_sequence:
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - destroy
+verifier:
+  name: ansible

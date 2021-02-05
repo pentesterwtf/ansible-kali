@@ -1,0 +1,13 @@
+---
+# Our testing container does not contain python
+# We want this so ansible will run
+- name:  Install testing prerequisites
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Update Apt
+    raw: apt-get update
+  - name: Install python
+    raw:  apt-get install -y python3
+  - name: Install sudo
+    raw:  apt-get install -y sudo
